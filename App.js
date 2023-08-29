@@ -1,20 +1,42 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useCallback } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Login from './components/Login';
+import Register from './components/Register';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    'Bangers': require('./assets/fonts/Bangers-Regular.ttf'),
+    'ComicNeue': require('./assets/fonts/ComicNeue-Regular.ttf')
+  })
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      {/* <Register/> */}
+      <Login />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    alignItems: 'center'
+  }
 });
