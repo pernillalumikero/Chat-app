@@ -1,17 +1,11 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Banner from './Banner';
 
 export default function Login() {
   return (
     <>
-    <View style={styles.banner}>
-        <Text style={styles.slogan}>
-          <Text style={styles.orange}>P</Text>ower
-          <Text style={styles.orange}> o</Text>f
-          <Text style={styles.orange}> w</Text>ords
-          <Text style={styles.orange}> chat</Text>-app
-        </Text>
-      </View>
+    <Banner />
       <ImageBackground source={require('../assets/img/background.png')} resizeMode="cover" style={styles.background} />
       <View style={styles.login}>
         <View style={styles.signinField}>
@@ -40,23 +34,9 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center'
     },
-    banner: {
-      backgroundColor: '#323232',
-      paddingVertical: 25,
-      width: '100%',
-      alignItems: 'center'
-    },
     background: {
       flex: 0.5,
       width: '100%'
-    },
-    slogan: {
-      color: 'white',
-      fontSize: 30,
-      fontFamily: 'Bangers'
-    },
-    orange: {
-      color: 'orange'
     },
     signin: {
       color: 'white',
@@ -74,7 +54,6 @@ const styles = StyleSheet.create({
     input: {
       backgroundColor: 'white',
       padding: 15,
-      width: '94%',
       borderWidth: 3,
       borderColor: 'black',
       marginBottom: 15,
@@ -105,8 +84,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     },
     speechbubbleImage: {
-      width: 180,
-      height: 160,
+      width: 170,
+      height: 150,
       alignItems: 'center',
       justifyContent: 'center'
     },
