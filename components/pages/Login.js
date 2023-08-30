@@ -23,7 +23,7 @@ export default function Login({ navigation }) {
       })
     })
     const data = await response.json()
-
+    console.log(data)
     setAccessToken(data.data.accessToken)
 
   } catch(error) {

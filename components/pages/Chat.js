@@ -19,16 +19,16 @@ export default function Chat() {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU3MTY3YTk3MzJmNmJiNmI2NTUxNDMiLCJ1c2VybmFtZSI6IkphbmUgRG9lIiwiZGF0ZSI6IjIwMjMtMDgtMjRUMDg6MzY6MTAuOTY0WiIsImlhdCI6MTY5Mjg2NjI4NH0.I7-0nZxihadG4XTeb436ZBNYig0ENJEzwjyNTxT9d9A'
           },
-          body: {
-            "content": {enteredText}
-        }
+          body: JSON.stringify({
+            content: enteredText
+          })
       })
     }
     
 
     useEffect(() => {
         fetchMessages()
-    }, [])
+    }, [handleSubmit])
 
     const fetchMessages = async () => {
         try {
