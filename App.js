@@ -6,9 +6,8 @@ import { StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import AuthNavigator from './components/navigators/AuthNavigator';
-import Login from './components/pages/Login';
+import RootNavigator from './components/navigators/RootNavigator';
+import { AuthProvider } from './components/context/AuthContext';
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -31,7 +30,9 @@ export default function App() {
 
   return (
     <NavigationContainer style={styles.container} onLayout={onLayoutRootView}>
-        <AuthNavigator />
+        <AuthProvider>
+          <RootNavigator />
+        </AuthProvider>
         <StatusBar style="light" />
     </NavigationContainer>
   );

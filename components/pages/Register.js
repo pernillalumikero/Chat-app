@@ -1,28 +1,84 @@
-import React from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native'
 
-export default function Register() {
+export default function Register({navigation}) {
+
+  const [newUser, setNewUser] = useState({
+    username: '',
+    password: '' 
+  })
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const registerUser = async () => {
+    try {
+      const response = await fetch('https://chat-api-with-auth.up.railway.app/auth/register', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newUser)
+      })
+      const data = await response.json()
+      setErrorMessage(data.message)
+      
+      if (errorMessage == 'Successfully registered') {
+        Alert.alert('Congratulations!', 'You have successfully registered.')
+        navigation.navigate('Log in')
+      }
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+
+  const handleName = (value) => {
+
+    let newObject = {
+      ...newUser,
+      username: value
+    }
+    setNewUser(newObject)
+  }
+
+  const handlePassword = (value) => {
+
+    let newObject = {
+      ...newUser,
+      password: value
+    }
+    setNewUser(newObject)
+  }
+
   return (
     <>
-    <ImageBackground source={require('../../assets/img/register.jpg')} resizeMode="cover" style={styles.background}>
-      <Text style={styles.registerLetters}>R</Text>
-      <Text style={styles.registerLetters}>E</Text>
-      <Text style={styles.registerLetters}>G</Text>
-      <Text style={styles.registerLetters}>I</Text>
-      <Text style={styles.registerLetters}>S</Text>
-      <Text style={styles.registerLetters}>T</Text>
-      <Text style={styles.registerLetters}>E</Text>
-      <Text style={styles.registerLetters}>R</Text>
-    </ImageBackground>
-    <View style={styles.container}>
-      <Text style={styles.text}>Register here</Text>
-      <TextInput style={styles.input} placeholder='UserName'></TextInput>
-      <Text style={styles.error}></Text>
-      <TextInput style={styles.input} placeholder='Password'></TextInput>
-      <TouchableOpacity style={styles.button} onPress={() => console.log('Registered')}>
-            <Text style={styles.registerText}>Register</Text>
-          </TouchableOpacity>
-    </View>
+      <ImageBackground source={require('../../assets/img/register.jpg')} resizeMode="cover" style={styles.background}>
+        <Text style={styles.registerLetters}>R</Text>
+        <Text style={styles.registerLetters}>E</Text>
+        <Text style={styles.registerLetters}>G</Text>
+        <Text style={styles.registerLetters}>I</Text>
+        <Text style={styles.registerLetters}>S</Text>
+        <Text style={styles.registerLetters}>T</Text>
+        <Text style={styles.registerLetters}>E</Text>
+        <Text style={styles.registerLetters}>R</Text>
+      </ImageBackground>
+      <View style={styles.container}>
+        <Text style={styles.text}>Register here</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='UserName'
+          onChangeText={(value) => handleName(value)}>
+        </TextInput>
+        <Text style={styles.error}>{errorMessage}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Password'
+          secureTextEntry={true}
+          onChangeText={(value) => handlePassword(value)}>
+        </TextInput>
+        <TouchableOpacity style={styles.button} onPress={() => registerUser()}>
+          <Text style={styles.registerText}>Register</Text>
+        </TouchableOpacity>
+      </View>
     </>
   )
 }
