@@ -1,13 +1,16 @@
+import 'react-native-gesture-handler';
+import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Login from './components/Login';
-import Register from './components/Register';
+import AuthNavigator from './components/navigators/AuthNavigator';
+import Login from './components/pages/Login';
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 export default function App() {
 
@@ -27,10 +30,10 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-      {/* <Register/> */}
-      <Login />
-    </SafeAreaView>
+    <NavigationContainer style={styles.container} onLayout={onLayoutRootView}>
+        <AuthNavigator />
+        <StatusBar style="light" />
+    </NavigationContainer>
   );
 }
 

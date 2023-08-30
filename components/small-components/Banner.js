@@ -18,7 +18,8 @@ export default function Banner() {
 const styles = StyleSheet.create({
     banner: {
         backgroundColor: '#323232',
-        paddingVertical: 25,
+        paddingTop: 25,
+        paddingBottom: 10,
         width: '100%',
         alignItems: 'center'
     },

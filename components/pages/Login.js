@@ -1,24 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Banner from './Banner';
+import Banner from '../small-components/Banner';
 
-export default function Login() {
+export default function Login({navigation}) {
+
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  
+
   return (
     <>
     <Banner />
-      <ImageBackground source={require('../assets/img/background.png')} resizeMode="cover" style={styles.background} />
+      <ImageBackground source={require('../../assets/img/background.png')} resizeMode="cover" style={styles.background} />
       <View style={styles.login}>
         <View style={styles.signinField}>
           <Text style={styles.signin}>Sign In</Text>
-          <TextInput style={styles.input} placeholder="UserName"></TextInput>
-          <TextInput style={styles.input} placeholder="Password"></TextInput>
-          <TouchableOpacity style={styles.button}>
+          <TextInput 
+            style={styles.input} 
+            placeholder="UserName"
+            onChangeText={(value) => setUserName(value)}>
+            </TextInput>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Password"
+            onChangeText={(value) => setPassword(value)}>
+            </TextInput>
+          <TouchableOpacity style={styles.button} onPress={() => console.log('Logged in')}>
             <Text style={styles.loginText}>Log in</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signinField2}>
-          <TouchableOpacity style={styles.speechbubble}>
-            <ImageBackground source={require('../assets/img/speech-bubble.png')} resizeMode="cover" style={styles.speechbubbleImage}>
+          <TouchableOpacity style={styles.speechbubble} onPress={() => navigation.navigate('Register')}>
+            <ImageBackground source={require('../../assets/img/speech-bubble.png')} resizeMode="cover" style={styles.speechbubbleImage}>
               <Text style={styles.speechBubbleText}>New here?</Text>
               <Text style={styles.registerText}>Register!</Text>
             </ImageBackground>
