@@ -108,7 +108,17 @@ export default function Chat() {
                                         </Text>
                                     </View>
                                 </>
-                                : null}
+                                : <>
+                                    <View style={styles.message}>
+                                        <Text style={styles.user}>Anonymous</Text>
+                                        <Text style={styles.content}>{item.content}</Text>
+                                        <Text style={styles.date}>
+                                            {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
+                                            &nbsp;
+                                            {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
+                                        </Text>
+                                    </View>
+                                </>}
                     </>}
             />
             <Modal

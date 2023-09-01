@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
-import Banner from '../small-components/Banner';
 
 export default function Login({ navigation }) {
 
