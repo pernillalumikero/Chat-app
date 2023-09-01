@@ -19,6 +19,11 @@ export default function Chat() {
         setMessageId(item)
     }
 
+    const addTime = (time) => {
+        let newTime = time.toLocaleTimeString()
+        return newTime
+    }
+
     const handleSubmit = () => {
         fetch('https://chat-api-with-auth.up.railway.app/messages', {
             method: 'POST',
@@ -84,7 +89,11 @@ export default function Chat() {
                                     activeOpacity={0.6}
                                     onLongPress={() => handleLongClick(item._id)}>
                                     <Text style={styles.content}>{item.content}</Text>
-                                    <Text style={styles.id}>{item._id}</Text>
+                                    <Text style={styles.date}>
+                                        {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
+                                        &nbsp;
+                                        {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
+                                    </Text>
                                 </TouchableOpacity>
                             </>
                             : item.user != null
@@ -92,7 +101,11 @@ export default function Chat() {
                                     <View style={styles.message}>
                                         <Text style={styles.user}>{item.user.username}</Text>
                                         <Text style={styles.content}>{item.content}</Text>
-                                        <Text style={styles.id}>{item._id}</Text>
+                                        <Text style={styles.date}>
+                                            {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
+                                            &nbsp;
+                                            {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
+                                        </Text>
                                     </View>
                                 </>
                                 : null}
@@ -190,8 +203,9 @@ const styles = StyleSheet.create({
     modalText: {
         color: 'red'
     },
-    id: {
-        color: 'red'
+    date: {
+        fontFamily: 'ComicNeue',
+        alignSelf: 'flex-end'
     },
     button: {
         backgroundColor: 'green'
