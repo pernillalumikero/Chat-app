@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Image, Text } from 'react-native';
+import { StyleSheet, Image, Text, KeyboardAvoidingView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -29,29 +29,37 @@ export default function AuthNavigator() {
     }
 
     return (
-        <Stack.Navigator
-            screenOptions={{
-                headerStyle: {
-                    backgroundColor: '#323232',
-                },
-                headerTintColor: '#fff',
-                headerBackTitleVisible: false,
-                headerTitleStyle: {fontFamily: 'Bangers', fontSize: 30}
-            }}>
-            <Stack.Screen
-                name="Log in"
-                component={Login}
-                options={{ headerTitle: (props) => <MainTitle {...props} /> }} />
-            <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
-            />
-        </Stack.Navigator>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: '#323232',
+                    },
+                    headerTintColor: '#fff',
+                    headerBackTitleVisible: false,
+                    headerTitleStyle: { fontFamily: 'Bangers', fontSize: 30 }
+                }}>
+                <Stack.Screen
+                    name="Log in"
+                    component={Login}
+                    options={{ headerTitle: (props) => <MainTitle {...props} /> }} />
+                <Stack.Screen
+                    name="Register"
+                    component={Register}
+                    options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
+                />
+            </Stack.Navigator>
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: "100%",
+      },
     slogan: {
         color: 'white',
         fontFamily: 'Bangers',

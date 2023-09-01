@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Chat from '../pages/Chat';
 import Profile from '../pages/Profile';
 import { Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import BottomNavigation from './BottomNavigation';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,6 +28,13 @@ export default function AppNavigator() {
                         backgroundColor: '#323232',
                     },
                     headerTintColor: '#fff',
+                    drawerStyle: {
+                        backgroundColor: '#323232',
+                        width: '40%',
+                      },
+                    drawerActiveTintColor: 'orange',
+                    drawerInactiveTintColor: '#fff',
+                    
                 }}>
                 <Drawer.Screen
                     name="Chat"
@@ -34,7 +42,7 @@ export default function AppNavigator() {
                     options={{ headerTitle: (props) => <LogoTitle {...props} /> }} />
                 <Drawer.Screen 
                     name="Settings" 
-                    component={Profile} 
+                    component={BottomNavigation} 
                     options={{ headerTitle: (props) => <LogoTitle {...props} /> }}/>
             </Drawer.Navigator>
         </KeyboardAvoidingView>
