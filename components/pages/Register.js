@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native'
+import { AuthContext } from '../context/AuthContext'
 
 export default function Register({navigation}) {
 
@@ -7,7 +8,7 @@ export default function Register({navigation}) {
     username: '',
     password: '' 
   })
-  const [errorMessage, setErrorMessage] = useState('')
+  const { errorMessage, setErrorMessage } = useContext(AuthContext)
 
   const registerUser = async () => {
     try {
@@ -21,7 +22,7 @@ export default function Register({navigation}) {
       const data = await response.json()
       setErrorMessage(data.message)
       
-      if (errorMessage == 'Successfully registered') {
+      if (data.message == 'Successfully registered') {
         Alert.alert('Congratulations!', 'You have successfully registered.')
         navigation.navigate('Log in')
       }

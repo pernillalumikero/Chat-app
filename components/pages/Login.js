@@ -5,32 +5,7 @@ import Banner from '../small-components/Banner';
 
 export default function Login({ navigation }) {
 
-  const { userName, setUserName } = useContext(AuthContext)
-  const { password, setPassword } = useContext(AuthContext)
-  const { setAccessToken } = useContext(AuthContext)
-
-  const fetchToken = async () => {
-
-    try {
-    const response = await fetch('https://chat-api-with-auth.up.railway.app/auth/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: userName,
-        password: password
-      })
-    })
-    const data = await response.json()
-    console.log(data)
-    setAccessToken(data.data.accessToken)
-
-  } catch(error) {
-    console.log(error)
-  }
-  }
-
+  const { setPassword, setUserName, handleLogin, errorMessage } = useContext(AuthContext)
 
   return (
     <>
@@ -43,13 +18,15 @@ export default function Login({ navigation }) {
             placeholder="UserName"
             onChangeText={(value) => setUserName(value)}>
           </TextInput>
+          <Text style={styles.error}>{errorMessage}</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
+            secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}>
           </TextInput>
           <TouchableOpacity style={styles.button}
-            onPress={() => fetchToken()}>
+            onPress={() => handleLogin()}>
             <Text style={styles.loginText}>Log in</Text>
           </TouchableOpacity>
         </View>
