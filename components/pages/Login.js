@@ -5,7 +5,7 @@ import Banner from '../small-components/Banner';
 
 export default function Login({ navigation }) {
 
-  const { setPassword, setUserName, handleLogin, errorMessage } = useContext(AuthContext)
+  const { setPassword, setUserName, handleLogin, loginErrorMessage, accessToken } = useContext(AuthContext)
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function Login({ navigation }) {
             placeholder="UserName"
             onChangeText={(value) => setUserName(value)}>
           </TextInput>
-          <Text style={styles.error}>{errorMessage}</Text>
+          <Text style={styles.error}>{loginErrorMessage}</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderWidth: 3,
     borderColor: 'black',
-    marginBottom: 15,
   },
   signinField: {
     width: '50%',
@@ -85,8 +84,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     width: '60%',
     alignItems: 'center',
-    marginLeft: 30
-
+    marginLeft: 30,
+    marginTop: 15,
   },
   loginText: {
     fontFamily: 'Bangers',
@@ -114,6 +113,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     paddingRight: 10,
     paddingBottom: 25
+  },
+  error: {
+    color: 'red',
+    marginBottom: 15,
+    marginLeft: 10
   }
 
 });

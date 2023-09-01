@@ -7,7 +7,7 @@ import Popup from '../small-components/Popup';
 
 export default function Chat() {
 
-    const { userName } = useContext(AuthContext)
+    const { userName, accessToken } = useContext(AuthContext)
 
     const [messages, setMessages] = useState([]);
     const [enteredText, setEnteredText] = useState('');
@@ -16,8 +16,7 @@ export default function Chat() {
 
     const handleLongClick = (item) => {
         setModalVisible(true)
-        let clickedMessageId = item
-        setMessageId(clickedMessageId)
+        setMessageId(item)
     }
 
     const handleSubmit = () => {
@@ -25,7 +24,7 @@ export default function Chat() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU3MTY3YTk3MzJmNmJiNmI2NTUxNDMiLCJ1c2VybmFtZSI6IkphbmUgRG9lIiwiZGF0ZSI6IjIwMjMtMDgtMjRUMDg6MzY6MTAuOTY0WiIsImlhdCI6MTY5Mjg2NjI4NH0.I7-0nZxihadG4XTeb436ZBNYig0ENJEzwjyNTxT9d9A'
+                'Authorization': 'Bearer ' + accessToken
             },
             body: JSON.stringify({
                 content: enteredText
@@ -36,12 +35,12 @@ export default function Chat() {
     }
 
     const handleDelete = async (id) => {
-        console.log(id)
+
         try {
             await fetch('https://chat-api-with-auth.up.railway.app/messages/' + id, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU3MTY3YTk3MzJmNmJiNmI2NTUxNDMiLCJ1c2VybmFtZSI6IkphbmUgRG9lIiwiZGF0ZSI6IjIwMjMtMDgtMjRUMDg6MzY6MTAuOTY0WiIsImlhdCI6MTY5Mjg2NjI4NH0.I7-0nZxihadG4XTeb436ZBNYig0ENJEzwjyNTxT9d9A'
+                    'Authorization': 'Bearer ' + accessToken
                 },
             })
         } catch (error) {
@@ -59,7 +58,7 @@ export default function Chat() {
         try {
             const response = await fetch('https://chat-api-with-auth.up.railway.app/messages/', {
                 headers: {
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU3MTY3YTk3MzJmNmJiNmI2NTUxNDMiLCJ1c2VybmFtZSI6IkphbmUgRG9lIiwiZGF0ZSI6IjIwMjMtMDgtMjRUMDg6MzY6MTAuOTY0WiIsImlhdCI6MTY5Mjg2NjI4NH0.I7-0nZxihadG4XTeb436ZBNYig0ENJEzwjyNTxT9d9A'
+                    'Authorization': 'Bearer ' + accessToken
                 }
             })
             const data = await response.json();
@@ -197,6 +196,4 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: 'green'
     }
-
-
 });

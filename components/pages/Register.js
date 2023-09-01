@@ -8,7 +8,7 @@ export default function Register({navigation}) {
     username: '',
     password: '' 
   })
-  const { errorMessage, setErrorMessage } = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const registerUser = async () => {
     try {
