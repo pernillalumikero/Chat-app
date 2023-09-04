@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Camera from '../pages/Camera';
 import Profile from '../pages/Profile';
 import { Fontisto } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
+import CameraApp from '../pages/CameraApp';
 
 
 const Tab = createBottomTabNavigator();
@@ -33,7 +33,7 @@ export default function BottomNavigation() {
                     }} />
                 <Tab.Screen
                     name="Camera"
-                    component={Camera}
+                    component={CameraApp}
                     options={{
                         tabBarIcon: ({ color }) => (
                             <FontAwesome5 name="camera-retro" size={30} color={color} />

@@ -4,23 +4,28 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function Login({ navigation }) {
 
-  const { setPassword, setUserName, handleLogin, loginErrorMessage, accessToken } = useContext(AuthContext)
+  const { setPassword, setUserName, handleLogin, loginErrorMessage } = useContext(AuthContext)
+  const [flex, setFlex] = useState(1)
 
   return (
     <>
-      <ImageBackground source={require('../../assets/img/background.png')} resizeMode="cover" style={styles.background} />
+      <ImageBackground source={require('../../assets/img/background.png')} resizeMode="cover" style={styles.background(flex)} />
       <View style={styles.login}>
         <View style={styles.signinField}>
           <Text style={styles.signin}>Sign In</Text>
           <TextInput
             style={styles.input}
             placeholder="UserName"
+            onPressIn={() => setFlex(0)}
+            onEndEditing={() => setFlex(1)}
             onChangeText={(value) => setUserName(value)}>
           </TextInput>
           <Text style={styles.error}>{loginErrorMessage}</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
+            onPressIn={() => setFlex(0)}
+            onEndEditing={() => setFlex(1)}
             secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}>
           </TextInput>
@@ -47,10 +52,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   },
-  background: {
-    flex: 0.5,
+  background: flex => ({
+    flex: flex,
     width: '100%'
-  },
+  }),
   signin: {
     color: 'white',
     fontFamily: 'Bangers',
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   login: {
-    flex: 0.5,
+    flex: 1,
     flexDirection: 'row',
     width: '100%',
     backgroundColor: '#323232',

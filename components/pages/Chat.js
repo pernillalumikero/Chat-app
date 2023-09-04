@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Modal, Image } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
 import Popup from '../small-components/Popup';
+import ChatMessage from '../small-components/ChatMessage';
 
 
 export default function Chat() {
@@ -14,16 +15,32 @@ export default function Chat() {
     const [modalVisible, setModalVisible] = useState(false);
     const [messageId, setMessageId] = useState(undefined)
 
+    //fetch all messages from API 
+    const fetchMessages = async () => {
+        try {
+            const response = await fetch('https://chat-api-with-auth.up.railway.app/messages/', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            })
+            const data = await response.json();
+            setMessages(data.data.reverse())
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchMessages()
+    }, [])
+
     const handleLongClick = (item) => {
         setModalVisible(true)
         setMessageId(item)
     }
 
-    const addTime = (time) => {
-        let newTime = time.toLocaleTimeString()
-        return newTime
-    }
-
+    //When user sends message - post to API and update messages, empthy input
     const handleSubmit = () => {
         fetch('https://chat-api-with-auth.up.railway.app/messages', {
             method: 'POST',
@@ -39,6 +56,7 @@ export default function Chat() {
         setEnteredText('')
     }
 
+    //delete choosen message by ID, update messages and hide modal
     const handleDelete = async (id) => {
 
         try {
@@ -55,25 +73,6 @@ export default function Chat() {
         setModalVisible(!modalVisible)
     }
 
-    useEffect(() => {
-        fetchMessages()
-    }, [])
-
-    const fetchMessages = async () => {
-        try {
-            const response = await fetch('https://chat-api-with-auth.up.railway.app/messages/', {
-                headers: {
-                    'Authorization': 'Bearer ' + accessToken
-                }
-            })
-            const data = await response.json();
-            setMessages(data.data.reverse())
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
         <View style={styles.container}>
             <FlatList
@@ -88,35 +87,21 @@ export default function Chat() {
                                     style={styles.usermessage}
                                     activeOpacity={0.6}
                                     onLongPress={() => handleLongClick(item._id)}>
-                                    <Text style={styles.content}>{item.content}</Text>
-                                    <Text style={styles.date}>
-                                        {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
-                                        &nbsp;
-                                        {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
-                                    </Text>
+                                    <Image style={styles.img} src={'uri: ' + item.user.image}></Image>
+                                    <ChatMessage content={item.content} date={item.date}/>
                                 </TouchableOpacity>
                             </>
                             : item.user != null
                                 ? <>
                                     <View style={styles.message}>
                                         <Text style={styles.user}>{item.user.username}</Text>
-                                        <Text style={styles.content}>{item.content}</Text>
-                                        <Text style={styles.date}>
-                                            {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
-                                            &nbsp;
-                                            {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
-                                        </Text>
+                                        <ChatMessage content={item.content} date={item.date}/>
                                     </View>
                                 </>
                                 : <>
                                     <View style={styles.message}>
                                         <Text style={styles.user}>Anonymous</Text>
-                                        <Text style={styles.content}>{item.content}</Text>
-                                        <Text style={styles.date}>
-                                            {new Date(item.date).toLocaleDateString([], { dateStyle: 'medium' })}
-                                            &nbsp;
-                                            {new Date(item.date).toLocaleTimeString([], { timeStyle: 'short' })}
-                                        </Text>
+                                        <ChatMessage content={item.content} date={item.date}/>
                                     </View>
                                 </>}
                     </>}
@@ -137,7 +122,7 @@ export default function Chat() {
                     value={enteredText}
                     onChangeText={(value) => setEnteredText(value)} />
                 <TouchableOpacity onPress={() => handleSubmit()}>
-                    <MaterialCommunityIcons name="send-circle" size={50} color="orange" />
+                    <MaterialCommunityIcons name="send-circle" size={40} color="orange" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -195,10 +180,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Bangers',
         fontSize: 18
     },
-    content: {
-        fontFamily: 'ComicNeue',
-        fontSize: 18
-    },
+    
     bottomView: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -213,11 +195,13 @@ const styles = StyleSheet.create({
     modalText: {
         color: 'red'
     },
-    date: {
-        fontFamily: 'ComicNeue',
-        alignSelf: 'flex-end'
-    },
     button: {
         backgroundColor: 'green'
+    },
+    img: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: 'black'
     }
 });

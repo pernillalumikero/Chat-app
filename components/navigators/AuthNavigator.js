@@ -29,9 +29,6 @@ export default function AuthNavigator() {
     }
 
     return (
-        <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}>
             <Stack.Navigator
                 screenOptions={{
                     headerStyle: {
@@ -51,7 +48,6 @@ export default function AuthNavigator() {
                     options={{ headerTitle: (props) => <LogoTitle {...props} /> }}
                 />
             </Stack.Navigator>
-        </KeyboardAvoidingView>
     );
 }
 
