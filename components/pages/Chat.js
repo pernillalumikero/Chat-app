@@ -15,6 +15,8 @@ export default function Chat() {
     const [modalVisible, setModalVisible] = useState(false);
     const [messageId, setMessageId] = useState(undefined)
 
+    const anonymousImage = 'https://cdn.pixabay.com/photo/2022/11/20/17/12/dog-7604760_1280.jpg'
+
     //fetch all messages from API 
     const fetchMessages = async () => {
         try {
@@ -82,28 +84,35 @@ export default function Chat() {
                 renderItem={({ item }) =>
                     <>
                         {item.user != null && item.user.username == userName
-                            ? <>
+                            ? <View style={styles.userContainer}>
                                 <TouchableOpacity
                                     style={styles.usermessage}
                                     activeOpacity={0.6}
                                     onLongPress={() => handleLongClick(item._id)}>
-                                    <Image style={styles.img} src={'uri: ' + item.user.image}></Image>
-                                    <ChatMessage content={item.content} date={item.date}/>
+                                    <ChatMessage content={item.content} date={item.date} />
                                 </TouchableOpacity>
-                            </>
+                                <Image style={styles.img} source={{ uri: item.user.image }}></Image>
+                            </View>
                             : item.user != null
-                                ? <>
+                                ? <View style={styles.messageContainer}>
+
+                                    {item.user.image != undefined
+                                        ? <>
+                                            <Image style={styles.img} source={{uri: `data:image/jpg;base64,${item.user.image}`}}></Image>
+                                        </>
+                                        : null}
                                     <View style={styles.message}>
                                         <Text style={styles.user}>{item.user.username}</Text>
-                                        <ChatMessage content={item.content} date={item.date}/>
+                                        <ChatMessage content={item.content} date={item.date} />
                                     </View>
-                                </>
-                                : <>
+                                </View>
+                                : <View style={styles.messageContainer}>
+                                    <Image style={styles.img} source={{ uri: anonymousImage }}></Image>
                                     <View style={styles.message}>
                                         <Text style={styles.user}>Anonymous</Text>
-                                        <ChatMessage content={item.content} date={item.date}/>
+                                        <ChatMessage content={item.content} date={item.date} />
                                     </View>
-                                </>}
+                                </View>}
                     </>}
             />
             <Modal
@@ -132,31 +141,30 @@ export default function Chat() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFE9D8',
         paddingTop: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFE9D8',
     },
     list: {
         flex: 1,
-        width: '100%'
+        width: '100%',
     },
     message: {
         backgroundColor: 'white',
         borderWidth: 3,
+        maxWidth: '65%',
         padding: 10,
-        marginVertical: 2,
-        marginLeft: 10,
-        marginRight: '30%',
-        borderRadius: 10
+        borderRadius: 10,
+        marginVertical: 3
     },
     usermessage: {
         backgroundColor: '#E0FFFF',
         borderWidth: 3,
+        maxWidth: '65%',
         padding: 10,
-        marginVertical: 2,
-        marginRight: 10,
-        marginLeft: '30%',
-        borderRadius: 10
+        borderRadius: 10,
+        marginVertical: 3,
     },
     input: {
         backgroundColor: 'white',
@@ -180,7 +188,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Bangers',
         fontSize: 18
     },
-    
     bottomView: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -199,9 +206,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'green'
     },
     img: {
-        width: 100,
-        height: 100,
+        width: 50,
+        height: 50,
         borderRadius: 50,
-        backgroundColor: 'black'
+        backgroundColor: 'black',
+        alignSelf: 'flex-end',
+        marginBottom: 10,
+        marginHorizontal: 10,
+        resizeMode: 'contain'
+    },
+    userContainer: {
+        flexDirection: 'row',
+        alignSelf: 'flex-end',
+    },
+    messageContainer: {
+        flexDirection: 'row',
     }
 });

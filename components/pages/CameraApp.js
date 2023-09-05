@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Text, Image, ImageBackground } from 'react-native'
 import { FontAwesome, Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import ImagePreview from './ImagePreview';
 
 export default function CameraApp() {
 
@@ -29,12 +30,14 @@ export default function CameraApp() {
         if (cameraRef.current) {
             try {
                 const picture = await cameraRef.current.takePictureAsync()
-                console.log(picture)
-            } catch(error) {
+                setPicture(picture.uri)
+            } catch (error) {
                 console.log(error)
             }
         }
     }
+
+    const [picture, setPicture] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -54,36 +57,41 @@ export default function CameraApp() {
     }
 
     return (
-        <View style={styles.container}>
-            <Camera
-                style={styles.cameraContainer}
-                type={type}
-                flashMode={flash}
-                ref={cameraRef}>
-                <View style={styles.buttonTopContainer}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => toggleCameraType()}>
-                        <FontAwesome name='refresh' size={24} color='white' />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => toggleFlash()}>
-                        {flash == FlashMode.on
-                            ? <MaterialIcons name="flash-on" size={24} color="white" />
-                            : <MaterialIcons name="flash-off" size={24} color="white" />
-                        }
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.buttonBottomContainer}>
-                    <TouchableOpacity 
-                        style={styles.button}
-                        onPress={() => takePicture()}>
-                        <MaterialCommunityIcons name="camera-iris" size={40} color="white" />
-                    </TouchableOpacity>
-                </View>
-            </Camera>
-        </View>
+        <>
+            {picture
+                ? <ImagePreview picture={picture} setPicture={setPicture} />
+                : <View style={styles.container}>
+                    <Camera
+                        style={styles.cameraContainer}
+                        type={type}
+                        flashMode={flash}
+                        ref={cameraRef}>
+                        <View style={styles.buttonTopContainer}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => toggleCameraType()}>
+                                <FontAwesome name='refresh' size={24} color='white' />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => toggleFlash()}>
+                                {flash == FlashMode.on
+                                    ? <MaterialIcons name="flash-on" size={24} color="white" />
+                                    : <MaterialIcons name="flash-off" size={24} color="white" />
+                                }
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.buttonBottomContainer}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => takePicture()}>
+                                <MaterialCommunityIcons name="camera-iris" size={40} color="white" />
+                            </TouchableOpacity>
+                        </View>
+                    </Camera>
+                </View>}
+        </>
+
     )
 }
 
@@ -106,6 +114,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     buttonBottomContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
     }
 })
