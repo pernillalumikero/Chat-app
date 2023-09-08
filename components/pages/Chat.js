@@ -4,11 +4,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AuthContext } from '../context/AuthContext';
 import Popup from '../small-components/Popup';
 import ChatMessage from '../small-components/ChatMessage';
+import { ProfileContext } from '../context/ProfileContext';
+import * as FileSystem from 'expo-file-system';
 
 
 export default function Chat() {
 
     const { userName, accessToken } = useContext(AuthContext)
+    const { picture, img } = useContext(ProfileContext)
 
     const [messages, setMessages] = useState([]);
     const [enteredText, setEnteredText] = useState('');
@@ -26,7 +29,9 @@ export default function Chat() {
                 }
             })
             const data = await response.json();
+            console.log(data.data[2].user.image)
             setMessages(data.data.reverse())
+
 
         } catch (error) {
             console.log(error)
@@ -91,16 +96,15 @@ export default function Chat() {
                                     onLongPress={() => handleLongClick(item._id)}>
                                     <ChatMessage content={item.content} date={item.date} />
                                 </TouchableOpacity>
-                                <Image style={styles.img} source={{ uri: item.user.image }}></Image>
                             </View>
                             : item.user != null
                                 ? <View style={styles.messageContainer}>
 
                                     {item.user.image != undefined
                                         ? <>
-                                            <Image style={styles.img} source={{uri: `data:image/jpg;base64,${item.user.image}`}}></Image>
+                                            <Image style={styles.img} source={{ uri: item.user.image }}></Image>
                                         </>
-                                        : null}
+                                        : <Image style={styles.img} source={{ uri: img }}></Image>}
                                     <View style={styles.message}>
                                         <Text style={styles.user}>{item.user.username}</Text>
                                         <ChatMessage content={item.content} date={item.date} />
@@ -113,7 +117,8 @@ export default function Chat() {
                                         <ChatMessage content={item.content} date={item.date} />
                                     </View>
                                 </View>}
-                    </>}
+                    </>
+                }
             />
             <Modal
                 animationType="slide"
@@ -150,6 +155,12 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
     },
+    usersView: {
+        height: 100,
+        backgroundColor: 'black',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1
+    },
     message: {
         backgroundColor: 'white',
         borderWidth: 3,
@@ -165,6 +176,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         marginVertical: 3,
+        marginRight: 10
     },
     input: {
         backgroundColor: 'white',
@@ -183,6 +195,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
         backgroundColor: '#323232',
+        width: '100%'
     },
     user: {
         fontFamily: 'Bangers',
@@ -212,8 +225,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         alignSelf: 'flex-end',
         marginBottom: 10,
-        marginHorizontal: 10,
-        resizeMode: 'contain'
+        marginHorizontal: 3,
+        resizeMode: 'cover'
     },
     userContainer: {
         flexDirection: 'row',

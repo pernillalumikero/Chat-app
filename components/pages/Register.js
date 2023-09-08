@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert, Modal, Touchable } from 'react-native'
 import { AuthContext } from '../context/AuthContext'
 
 export default function Register({ navigation }) {
@@ -10,6 +10,7 @@ export default function Register({ navigation }) {
   })
   const [errorMessage, setErrorMessage] = useState('')
   const [flex, setFlex] = useState('block')
+  const [modalVisible, setModalVisible] = useState(false);
 
   const registerUser = async () => {
     try {
@@ -24,12 +25,17 @@ export default function Register({ navigation }) {
       setErrorMessage(data.message)
 
       if (data.message == 'Successfully registered') {
-        Alert.alert('Congratulations!', 'You have successfully registered.')
-        navigation.navigate('Log in')
+        setErrorMessage('')
+        setModalVisible(true)
       }
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const redirectToLogin = () => {
+    setModalVisible(false)
+    navigation.navigate('Log in')
   }
 
   const handleName = (value) => {
@@ -83,6 +89,23 @@ export default function Register({ navigation }) {
         <TouchableOpacity style={styles.button} onPress={() => registerUser()}>
           <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Congratulations!</Text>
+              <Text style={styles.modalText}>You have successfully registered.</Text>
+              <TouchableOpacity
+                style={styles.okButton}
+                onPress={() => redirectToLogin()}>
+                <Text style={styles.registerText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </>
   )
@@ -109,8 +132,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     width: '60%',
     alignItems: 'center',
+    alignSelf: 'center',
     padding: 10,
-    marginLeft: '20%',
     marginTop: 15
   },
   registerLetters: {
@@ -139,5 +162,42 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 15,
     marginLeft: 10
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    borderWidth: 3,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontFamily: 'ComicNeue',
+    fontSize: 20
+  },
+  okButton: {
+    backgroundColor: 'orange',
+    borderWidth: 3,
+    width: '60%',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 15,
+    paddingHorizontal: 30
   }
 });

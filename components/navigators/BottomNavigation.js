@@ -1,10 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../pages/Profile';
-import { Fontisto } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import CameraApp from '../pages/CameraApp';
-
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +44,7 @@ export default function BottomNavigation() {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      width: "100%",
+        flex: 1,
+        width: "100%",
     },
-  })
+})

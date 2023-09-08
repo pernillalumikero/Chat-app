@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { View, StyleSheet, TouchableOpacity, Text, Image, ImageBackground } from 'react-native'
@@ -6,6 +6,8 @@ import { FontAwesome, Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import ImagePreview from './ImagePreview';
+import { ProfileContext } from '../context/ProfileContext';
+
 
 export default function CameraApp() {
 
@@ -30,14 +32,14 @@ export default function CameraApp() {
         if (cameraRef.current) {
             try {
                 const picture = await cameraRef.current.takePictureAsync()
-                setPicture(picture.uri)
+                setPicture(picture)
             } catch (error) {
                 console.log(error)
             }
         }
     }
 
-    const [picture, setPicture] = useState(null)
+    const { picture, setPicture, setProfilePic } = useContext(ProfileContext)
 
     useEffect(() => {
         (async () => {
@@ -59,7 +61,7 @@ export default function CameraApp() {
     return (
         <>
             {picture
-                ? <ImagePreview picture={picture} setPicture={setPicture} />
+                ? <ImagePreview />
                 : <View style={styles.container}>
                     <Camera
                         style={styles.cameraContainer}
