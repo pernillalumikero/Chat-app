@@ -9,7 +9,10 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <ImageBackground source={require('../../assets/img/background.png')} resizeMode="cover" style={styles.background(flex)} />
+      <ImageBackground
+        source={require('../../assets/img/background.png')}
+        resizeMode="cover"
+        style={styles.background(flex)} />
       <View style={styles.login}>
         <View style={styles.signinField}>
           <Text style={styles.signin}>Sign In</Text>
@@ -20,7 +23,11 @@ export default function Login({ navigation }) {
             onEndEditing={() => setFlex(1)}
             onChangeText={(value) => setUserName(value)}>
           </TextInput>
-          <Text style={styles.error}>{loginErrorMessage}</Text>
+          <Text style={styles.error}>
+            {loginErrorMessage == 'Successfully authenticated'
+              ? null
+              : loginErrorMessage}
+          </Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -29,14 +36,20 @@ export default function Login({ navigation }) {
             secureTextEntry={true}
             onChangeText={(value) => setPassword(value)}>
           </TextInput>
-          <TouchableOpacity style={styles.button}
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => handleLogin()}>
             <Text style={styles.loginText}>Log in</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signinField2}>
-          <TouchableOpacity style={styles.speechbubble} onPress={() => navigation.navigate('Register')}>
-            <ImageBackground source={require('../../assets/img/speech-bubble.png')} resizeMode="cover" style={styles.speechbubbleImage}>
+          <TouchableOpacity
+            style={styles.speechbubble} 
+            onPress={() => navigation.navigate('Register')}>
+            <ImageBackground
+              source={require('../../assets/img/speech-bubble.png')}
+              resizeMode="cover"
+              style={styles.speechbubbleImage}>
               <Text style={styles.speechBubbleText}>New here?</Text>
               <Text style={styles.registerText}>Register!</Text>
             </ImageBackground>

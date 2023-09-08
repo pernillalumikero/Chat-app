@@ -29,7 +29,7 @@ export default function Chat() {
                 }
             })
             const data = await response.json();
-            console.log(data.data[2].user.image)
+            //setting messages as reverse list to get newest message first
             setMessages(data.data.reverse())
 
 
@@ -99,7 +99,6 @@ export default function Chat() {
                             </View>
                             : item.user != null
                                 ? <View style={styles.messageContainer}>
-
                                     {item.user.image != undefined
                                         ? <>
                                             <Image style={styles.img} source={{ uri: item.user.image }}></Image>
@@ -127,7 +126,10 @@ export default function Chat() {
                 onRequestClose={() => {
                     setModalVisible(!modalVisible);
                 }}>
-                <Popup setModalVisible={setModalVisible} messageId={messageId} handleDelete={handleDelete} />
+                <Popup 
+                    setModalVisible={setModalVisible} 
+                    messageId={messageId} 
+                    handleDelete={handleDelete} />
             </Modal>
             <View style={styles.inputview}>
                 <TextInput

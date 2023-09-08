@@ -39,7 +39,7 @@ export default function CameraApp() {
         }
     }
 
-    const { picture, setPicture, setProfilePic } = useContext(ProfileContext)
+    const { picture, setPicture} = useContext(ProfileContext)
 
     useEffect(() => {
         (async () => {

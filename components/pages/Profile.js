@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Modal } fro
 import { AuthContext } from '../context/AuthContext'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 import { ProfileContext } from '../context/ProfileContext';
+import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 
 export default function Profile() {
@@ -91,37 +91,44 @@ export default function Profile() {
         handleLogout()
     }
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images
-        })
+    //Function to choose image from phone image library and upload to API
+    // const pickImage = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images
+    //     })
 
-        if (!result.canceled) {
-            setPicture(result.assets[0])
-            try {
-                const response = await FileSystem.uploadAsync('https://chat-api-with-auth.up.railway.app/users', result.assets[0].uri, {
-                    httpMethod: 'PATCH',
-                    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-                    fieldName: 'ProfileImage',
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken
-                    },
-                })
-                console.log(JSON.stringify(response, null, 4));
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    }
+    //     if (!result.canceled) {
+    //         setPicture(result.assets[0])
+    //         try {
+    //             const response = await FileSystem.uploadAsync('https://chat-api-with-auth.up.railway.app/users', result.assets[0].uri, {
+    //                 httpMethod: 'PATCH',
+    //                 uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+    //                 fieldName: 'ProfileImage',
+    //                 headers: {
+    //                     'Authorization': 'Bearer ' + accessToken
+    //                 },
+    //             })
+    //             console.log(JSON.stringify(response, null, 4));
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+    // }
 
     return (
         //sending display to Stylesheet as a variable to avoid keyboard hiding input
         <View style={styles.container}>
             <Text style={styles.username}>{userName}</Text>
-            <Image style={styles.profileImg(display)} source={profilePic ? { uri: profilePic.uri } : { uri: img }} />
+            <Image
+                style={styles.profileImg(display)}
+                source={profilePic
+                    ? { uri: profilePic.uri }
+                    : { uri: img }} />
             <TextInput
                 style={styles.input}
-                placeholder={user.firstname ? user.firstname : 'First name'}
+                placeholder={user.firstname 
+                    ? user.firstname 
+                    : 'First name'}
                 onPressIn={() => setDisplay('none')}
                 onChangeText={(value) => handleFirstName(value)} />
             <TextInput
@@ -268,7 +275,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'Bangers',
         fontSize: 25,
-      },
+    },
     yesButton: {
         backgroundColor: '#FFCD91',
         borderWidth: 3,

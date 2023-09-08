@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Alert, Modal, Touchable } from 'react-native'
-import { AuthContext } from '../context/AuthContext'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ImageBackground, Modal } from 'react-native'
 
 export default function Register({ navigation }) {
 
@@ -9,7 +8,7 @@ export default function Register({ navigation }) {
     password: ''
   })
   const [errorMessage, setErrorMessage] = useState('')
-  const [flex, setFlex] = useState('block')
+  const [flex, setFlex] = useState('flex')
   const [modalVisible, setModalVisible] = useState(false);
 
   const registerUser = async () => {
@@ -39,7 +38,6 @@ export default function Register({ navigation }) {
   }
 
   const handleName = (value) => {
-
     let newObject = {
       ...newUser,
       username: value
@@ -48,7 +46,6 @@ export default function Register({ navigation }) {
   }
 
   const handlePassword = (value) => {
-
     let newObject = {
       ...newUser,
       password: value
@@ -74,7 +71,7 @@ export default function Register({ navigation }) {
           style={styles.input}
           placeholder='UserName'
           onPressIn={() => setFlex('none')}
-          onEndEditing={() => setFlex('block')}
+          onEndEditing={() => setFlex('flex')}
           onChangeText={(value) => handleName(value)}>
         </TextInput>
         <Text style={styles.error}>{errorMessage}</Text>
@@ -82,7 +79,7 @@ export default function Register({ navigation }) {
           style={styles.input}
           placeholder='Password'
           onPressIn={() => setFlex('none')}
-          onEndEditing={() => setFlex('block')}
+          onEndEditing={() => setFlex('flex')}
           secureTextEntry={true}
           onChangeText={(value) => handlePassword(value)}>
         </TextInput>

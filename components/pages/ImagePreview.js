@@ -15,6 +15,7 @@ export default function ImagePreview() {
 
     // const { accessToken } = useContext(AuthContext)
     
+    //Function to upload picture taken by camera to API, not working
     // const uploadImage = async () => {
     //     try {
     //         const response = await FileSystem.uploadAsync('https://chat-api-with-auth.up.railway.app/users', picture.uri, {
